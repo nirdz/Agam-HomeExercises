@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace Targil1
 {
+    /* Enum for reasons for rejecting customer/worker to enter the store */
     public enum RejectionReason
     {
         BodyHeatHigh,

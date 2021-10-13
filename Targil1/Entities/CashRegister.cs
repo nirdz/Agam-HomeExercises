@@ -26,12 +26,17 @@ namespace Targil1
             ShoppingLog = new List<KeyValuePair<int, List<Product>>>();
         }
 
-
+        /*
+         *  Logs the activation of the cash register by worker  
+        */ 
         public void ActivateCashRegisterByWorker(int workerId, DateTime date)
         {
             ActivationLog.Add(new KeyValuePair<int, DateTime>(workerId, date));
         }
 
+        /*
+         *  Logs the transaction made by a customer
+        */
         public void RegisterCustomerTransaction(int customerId, List<Product> productsBought)
         {
             ShoppingLog.Add(new KeyValuePair<int, List<Product>>(customerId, productsBought));

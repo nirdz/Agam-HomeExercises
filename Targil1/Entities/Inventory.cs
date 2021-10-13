@@ -9,7 +9,17 @@ namespace Targil1
 
     public class Inventory
     {
+        /*
+         *   Dictionary for all the product catalogs in the store.
+         *   Key is catalog code, value is product catalog.
+         *   A product catalog contains all the products from this catalog.
+        */
         private Dictionary<string, ProductCatalog> productCatalogs;
+
+        /*
+         *   Dictionary for all the products in the store.
+         *   Key is identifier code (unique for each product), value is product.
+        */
         public Dictionary<string, Product> AllProducts { get; }
 
         public Inventory()
@@ -18,12 +28,18 @@ namespace Targil1
             AllProducts = new Dictionary<string, Product>();
         }
 
+        /*
+         *  Adds new empty catalog to inventory 
+        */ 
         public void AddCatalog(string catalogCode)
         {
             ProductCatalog productCatalog = new ProductCatalog(catalogCode);
             productCatalogs.Add(catalogCode, productCatalog);
         }
 
+        /*
+         *  Adds new catalog of products to inventory 
+        */
         public void AddCatalog(string catalogCode, HashSet<Product> products)
         {
             ProductCatalog productCatalog = new ProductCatalog(catalogCode, products);
@@ -35,6 +51,10 @@ namespace Targil1
             }
         }
 
+        /*
+         *  Adds new product to inventory.
+         *  Adds the product to the relevant catalog and to "AllProducts"
+        */
         public void AddProduct(Product p)
         {
             string catalogCode = p.CatalogCode;
@@ -55,6 +75,11 @@ namespace Targil1
             return null;
         }
 
+        /*
+         *  Removes a product from inventory.
+         *  If the product's catalog has now less than 20 items - displays message 
+         *  that recommends to order more. If there is already an order, displays relevant message.
+        */
         public void RemoveProduct(Product p)
         {
             string catalogCode = p.CatalogCode;
@@ -67,27 +92,30 @@ namespace Targil1
             if (isRemoved)
             {
                 AllProducts.Remove(p.IdentifierCode);
-                // Check if the catalog has less than 20 items,
+                // Check if the catalog has less than 20 items
                 int numProductsInCatalog = productCatalog.GetNumProducts();
                 if(numProductsInCatalog < 20)
                 {
                     OrderStatus status = productCatalog.OrderStatus;
                     // Check if there is no order for the product
                     if (status.Equals(OrderStatus.NoOrder)){
-                        Console.WriteLine($"There are less than 20 products in catalog code {catalogCode}" + 
+                        Console.WriteLine($"There are less than 20 products in catalog code '{catalogCode}'" + 
                         ". It is recommended to order more");
                     }
                     else
                     {
                         // There is already an order
-                        Console.WriteLine($"There are less than 20 products in catalog code {catalogCode}" +
-                        ". There is already an order with status " + status);
+                        Console.WriteLine($"There are less than 20 products in catalog code '{catalogCode}'" +
+                        $". There is already an order with status {status}" );
                     }
-                    
                 }
             }
         }
 
+        /*
+         *  Print the inventory, sort by order status of the catalogs.
+         *  If there are less than 20 items in the catalog, displays relevant message.
+        */
         public void PrintInventory()
         {
             int totalProductsInInventory = 0;
@@ -98,15 +126,36 @@ namespace Targil1
             foreach (var pair in sortedProductCatalogs)
             {
                 ProductCatalog productCatalog = pair.Value;
-                Console.WriteLine(productCatalog + "\n");
+                Console.WriteLine(productCatalog);
                 totalProductsInInventory += productCatalog.GetNumProducts();
+                // Check if the catalog has less than 20 items
+                int numProductsInCatalog = productCatalog.GetNumProducts();
+                if (numProductsInCatalog < 20)
+                {
+                    OrderStatus status = productCatalog.OrderStatus;
+                    // Check if there is no order for the product
+                    if (status.Equals(OrderStatus.NoOrder))
+                    {
+                        Console.WriteLine($"Note: There are less than 20 products in this catalog" +
+                        ". It is recommended to order more\n");
+                    }
+                    else
+                    {
+                        // There is already an order
+                        Console.WriteLine($"There are less than 20 products in this catalog" +
+                        $". There is already an order with status {status}\n");
+                    }
+                }
             }
             Console.WriteLine($"Total number of products in inventory: {totalProductsInInventory}");
         }
 
+        /*
+         *  Represents a catalog of products - products from the same group.
+        */
         private class ProductCatalog
         {
-            public string CatalogCode { get; }
+            public string CatalogCode { get; } // Unique for each catalog
             public HashSet<Product> Products { get; }
             public OrderStatus OrderStatus { get; set; }
 

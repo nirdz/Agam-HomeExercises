@@ -146,6 +146,7 @@ namespace Targil1
                 Customer cus = storeQueue.DequeueCustomer();
                 customersInsideStore.Add(cus.Id, cus);
             }
+            Console.WriteLine();
             Console.WriteLine($"{customersToEnterStore} customers entered the store");
             Console.Write("\r\nPress Enter to continue");
             Console.ReadLine();
@@ -204,6 +205,7 @@ namespace Targil1
         {
             PrintStoreWorkers();
             Console.WriteLine();
+            Console.WriteLine("Select the worker that activated the cash register");
             int workerId = GetValidWorkerIdInput();
             DateTime activationDate = DateTime.Now;
             cashRegister.ActivateCashRegisterByWorker(workerId, activationDate);
@@ -215,7 +217,16 @@ namespace Targil1
 
         private static void RegisterCustomerTransaction()
         {
+            if(customersInsideStore.Count == 0)
+            {
+                Console.WriteLine("There are no customers inside the store. Insert some customers who wait in the queue");
+                Console.Write("\r\nPress Enter to continue");
+                Console.ReadLine();
+                return;
+            }
+
             PrintCustomersInsideStore();
+            Console.WriteLine();
             int customerId = GetValidCustomerIdInput();
             Console.WriteLine();
             PrintStoreProducts();
@@ -231,7 +242,10 @@ namespace Targil1
                 {
                     Console.WriteLine($"Product with identifier code {identifierCode} not exists.");
                 }
-                productsBought.Add(p);
+                else
+                {
+                    productsBought.Add(p);
+                }
                 identifierCode = Console.ReadLine();
             }
             Console.WriteLine();
@@ -284,6 +298,7 @@ namespace Targil1
                 workerId = GetValidIntInput();
             }
 
+            Console.WriteLine();
             Console.WriteLine("Enter ids of customers that were around this customer.");
             Console.WriteLine("Press 0 to finish.");
             int customerId = GetValidIntInput();
@@ -484,7 +499,7 @@ namespace Targil1
             Worker worker1 = new Worker(111, 36, true, false, WorkerRole.GeneralWorker);
             Worker worker2 = new Worker(222, 36, true, false, WorkerRole.GeneralWorker);
             Worker worker3 = new Worker(333, 36, true, false, WorkerRole.Cashier);
-            Worker worker4 = new Worker(444, 40, true, false, WorkerRole.GeneralWorker);
+            Worker worker4 = new Worker(444, 48, true, false, WorkerRole.GeneralWorker);
             storeWorkers = new Dictionary<int, Worker>()
             {
                 {worker1.Id, worker1 },
@@ -582,7 +597,6 @@ namespace Targil1
 
         private static int GetValidCustomerIdInput()
         {
-            return 5;
             Console.WriteLine("Enter customer's id:");
             int customerId = GetValidIntInput();
             bool isCustomerExistsInsideStore = customersInsideStore.ContainsKey(customerId);
@@ -590,7 +604,7 @@ namespace Targil1
             {
                 Console.WriteLine("Customer not found inside store. Enter customer's id:");
                 customerId = GetValidIntInput();
-                isCustomerExistsInsideStore = storeWorkers.ContainsKey(customerId);
+                isCustomerExistsInsideStore = customersInsideStore.ContainsKey(customerId);
             }
             return customerId;
         }
@@ -600,7 +614,7 @@ namespace Targil1
             Console.WriteLine("Store workers:");
             foreach (Worker worker in storeWorkers.Values)
             {
-                Console.WriteLine($"Id: {worker.Id}, Role: {worker.Role}");
+                Console.WriteLine(worker);
             }
         }
 

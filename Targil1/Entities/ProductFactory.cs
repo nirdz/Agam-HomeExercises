@@ -6,8 +6,14 @@ using System.Threading.Tasks;
 
 namespace Targil1
 {
+    /*
+     *  Helps to dynamically create products. 
+    */
     public class ProductFactory
     {
+        /*
+         *   Dynamically create products. the type of the product is determined by "prodName"
+        */
         public static Product CreateProduct(string prodName, string identifierCode, DateTime expirationDate)
         {
             Product prod = null;

@@ -6,6 +6,11 @@ using System.Threading.Tasks;
 
 namespace Targil1
 {
+    /*
+     *  Represents a product in the store.
+     *  Each single product is uniquely identified by "IdentifierCode",
+     *  and belongs to a catalog of products. The catalog code is "CatalogCode"
+    */
     public abstract class Product
     {
         public abstract string Name { get; }
@@ -14,14 +19,6 @@ namespace Targil1
         public string IdentifierCode { get; set; }
         public DateTime ExpirationDate { get; set; }
 
-        /*public Product (string name, double price, DateTime expirationDate, string identifierCode, string catalogCode)
-        {
-            Name = name;
-            Price = price;
-            ExpirationDate = expirationDate;
-            IdentifierCode = identifierCode;
-            CatalogCode = catalogCode;
-        }*/
 
         public override bool Equals(object obj)
         {

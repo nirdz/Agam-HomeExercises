@@ -43,7 +43,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Entities\AttendanceTrackingRecord.cs" />
     <Compile Include="Entities\CashRegister.cs" />
     <Compile Include="Entities\Customer.cs" />
     <Compile Include="Entities\Person.cs" />

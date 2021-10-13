@@ -51,7 +51,7 @@ namespace Targil1
         }
 
         /*
-         *   
+         *   Print info about the customers in the queue
         */
         public void PrintCustomersInQueue()
         {

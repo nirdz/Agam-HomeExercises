@@ -14,15 +14,5 @@ namespace Targil1
         
         }
 
-
-        /*
-         *  Returns whether a customer can enter the store's queue.
-         *  A customer can enter if his body heat <= 38, 
-         *  wears mask and is not in inIsolation.
-         */
-        /*public bool CanEnterStoreQueue()
-        {
-            if(BodyHeat <= 38)
-        }*/
     }
 }

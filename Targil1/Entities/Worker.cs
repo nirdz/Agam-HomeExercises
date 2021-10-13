@@ -15,5 +15,13 @@ namespace Targil1
         {
             Role = role;
         }
+
+        public override string ToString()
+        {
+            string str = $"Id: {Id}, Role: {Role}, Body temperature: {BodyHeat}";
+            str += IsWearingMask ? ", wears mask" : ", not wearing mask";
+            str += IsInIsolation ? ", should be in isolation" : ", should not be in isolation";
+            return str;
+        }
     }
 }
