@@ -36,5 +36,14 @@ namespace Targil1
         {
             ShoppingLog.Add(new KeyValuePair<int, List<Product>>(customerId, productsBought));
         }
+
+        public void PrintActivationLog()
+        {
+            foreach (KeyValuePair<int, DateTime> record in ActivationLog)
+            {
+                Console.WriteLine($"Worker id: {record.Key}, Time: {record.Value}");
+            }
+            Console.WriteLine($"Total records: {ActivationLog.Count}");
+        }
     }
 }

@@ -24,15 +24,15 @@ namespace Targil1
         {
             if(cus.BodyHeat > 38)
             {
-                throw new CustomerNotAllowedToEnterQueueException(QueueRejectionReason.BodyHeatHigh);
+                throw new PersonNotAllowedToEnterStoreException(RejectionReason.BodyHeatHigh);
             }
             if (!cus.IsWearingMask)
             {
-                throw new CustomerNotAllowedToEnterQueueException(QueueRejectionReason.NoMask);
+                throw new PersonNotAllowedToEnterStoreException(RejectionReason.NoMask);
             }
             if (cus.IsInIsolation)
             {
-                throw new CustomerNotAllowedToEnterQueueException(QueueRejectionReason.InIsolation);
+                throw new PersonNotAllowedToEnterStoreException(RejectionReason.InIsolation);
             }
             customerQueue.Enqueue(cus);
         }
@@ -51,9 +51,18 @@ namespace Targil1
         }
 
         /*
-         *  Returns how many customers are currently in the queue.  
-         */
-        public int GetNumCustomersInQueue()
+         *   
+        */
+        public void PrintCustomersInQueue()
+        {
+            foreach (Customer cus in customerQueue)
+            {
+                Console.WriteLine(cus);
+            }
+            Console.WriteLine($"Total number of customers in queue: {customerQueue.Count}");
+        }
+
+        public int GetCountCustomersInQueue()
         {
             return customerQueue.Count;
         }

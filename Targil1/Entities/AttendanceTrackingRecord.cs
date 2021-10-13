@@ -16,5 +16,10 @@ namespace Targil1
             Action = action;
             Date = date;
         }
+
+        public override string ToString()
+        {
+            return $"Action: {Action}, Date: {Date}";
+        }
     }
 }

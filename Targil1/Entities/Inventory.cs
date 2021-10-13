@@ -9,47 +9,82 @@ namespace Targil1
 
     public class Inventory
     {
-        private Dictionary<string, ProductCatalog> ProductCatalogs { get; }
+        private Dictionary<string, ProductCatalog> productCatalogs;
+        public Dictionary<string, Product> AllProducts { get; }
 
         public Inventory()
         {
-            ProductCatalogs = new Dictionary<string, ProductCatalog>();
+            productCatalogs = new Dictionary<string, ProductCatalog>();
+            AllProducts = new Dictionary<string, Product>();
         }
 
         public void AddCatalog(string catalogCode)
         {
             ProductCatalog productCatalog = new ProductCatalog(catalogCode);
-            ProductCatalogs.Add(catalogCode, productCatalog);
+            productCatalogs.Add(catalogCode, productCatalog);
         }
 
         public void AddCatalog(string catalogCode, HashSet<Product> products)
         {
             ProductCatalog productCatalog = new ProductCatalog(catalogCode, products);
-            ProductCatalogs.Add(catalogCode, productCatalog);
+            productCatalogs.Add(catalogCode, productCatalog);
+            // Add to allProducts dict
+            foreach (Product p in products)
+            {
+                AllProducts.Add(p.IdentifierCode, p);
+            }
         }
 
-        public void AddProductToCatalog(string catalogCode, Product p)
+        public void AddProduct(Product p)
         {
-            if (!ProductCatalogs.ContainsKey(catalogCode))
+            string catalogCode = p.CatalogCode;
+            if (!productCatalogs.ContainsKey(catalogCode))
             {
-                throw new Exception("Catalog code " + catalogCode + " not exists in inventory");
+                throw new CatalogNotExistsException($"Catalog code {catalogCode} not exists in inventory");
             }
-            ProductCatalogs[catalogCode].AddProduct(p);
+            productCatalogs[catalogCode].AddProduct(p);
+            AllProducts.Add(p.IdentifierCode, p);
         }
 
-        public void RemoveProductFromCatalog(string catalogCode, Product p)
+        public Product GetProductByIdentifierCode(string identifierCode)
         {
-            if (!ProductCatalogs.ContainsKey(catalogCode))
+            if (AllProducts.ContainsKey(identifierCode))
             {
-                throw new Exception("Catalog code " + catalogCode + " not exists in inventory");
+                return AllProducts[identifierCode];
             }
-            ProductCatalog productCatalog = ProductCatalogs[catalogCode];
+            return null;
+        }
+
+        public void RemoveProduct(Product p)
+        {
+            string catalogCode = p.CatalogCode;
+            if (!productCatalogs.ContainsKey(catalogCode))
+            {
+                throw new CatalogNotExistsException($"Catalog code {catalogCode} not exists in inventory");
+            }
+            ProductCatalog productCatalog = productCatalogs[catalogCode];
             bool isRemoved = productCatalog.RemoveProduct(p);
             if (isRemoved)
             {
-                // TODO: Check if the catalog has less than 20 items,
+                AllProducts.Remove(p.IdentifierCode);
+                // Check if the catalog has less than 20 items,
                 int numProductsInCatalog = productCatalog.GetNumProducts();
-
+                if(numProductsInCatalog < 20)
+                {
+                    OrderStatus status = productCatalog.OrderStatus;
+                    // Check if there is no order for the product
+                    if (status.Equals(OrderStatus.NoOrder)){
+                        Console.WriteLine($"There are less than 20 products in catalog code {catalogCode}" + 
+                        ". It is recommended to order more");
+                    }
+                    else
+                    {
+                        // There is already an order
+                        Console.WriteLine($"There are less than 20 products in catalog code {catalogCode}" +
+                        ". There is already an order with status " + status);
+                    }
+                    
+                }
             }
         }
 
@@ -57,16 +92,16 @@ namespace Targil1
         {
             int totalProductsInInventory = 0;
             // Sort ProductCatalogs by OrderStatus
-            var sortedProductCatalogs = ProductCatalogs.ToList();
+            var sortedProductCatalogs = productCatalogs.ToList();
             sortedProductCatalogs.Sort((pair1, pair2) => pair1.Value.OrderStatus.CompareTo(pair2.Value.OrderStatus));
 
             foreach (var pair in sortedProductCatalogs)
             {
                 ProductCatalog productCatalog = pair.Value;
-                Console.WriteLine(productCatalog);
+                Console.WriteLine(productCatalog + "\n");
                 totalProductsInInventory += productCatalog.GetNumProducts();
             }
-            Console.WriteLine("Total number of products in inventory: " + totalProductsInInventory);
+            Console.WriteLine($"Total number of products in inventory: {totalProductsInInventory}");
         }
 
         private class ProductCatalog
@@ -119,7 +154,7 @@ namespace Targil1
 
             public override string ToString()
             {
-                string str = "Catalog Code: " + CatalogCode + ", Order Status: " + OrderStatus + "Products: ";
+                string str = "Catalog Code: " + CatalogCode + ",\nOrder Status: " + OrderStatus + ",\nProducts: ";
                 foreach (Product p in Products)
                 {
                     str += p + "\n";

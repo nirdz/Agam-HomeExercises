@@ -20,15 +20,15 @@ namespace Targil1
             // Throw exception if worker not allowed to clock in
             if (worker.BodyHeat > 38)
             {
-                throw new CustomerNotAllowedToEnterQueueException(QueueRejectionReason.BodyHeatHigh);
+                throw new PersonNotAllowedToEnterStoreException(RejectionReason.BodyHeatHigh);
             }
             if (!worker.IsWearingMask)
             {
-                throw new CustomerNotAllowedToEnterQueueException(QueueRejectionReason.NoMask);
+                throw new PersonNotAllowedToEnterStoreException(RejectionReason.NoMask);
             }
             if (worker.IsInIsolation)
             {
-                throw new CustomerNotAllowedToEnterQueueException(QueueRejectionReason.InIsolation);
+                throw new PersonNotAllowedToEnterStoreException(RejectionReason.InIsolation);
             }
 
             RegisterAttendanceToLog(worker.Id, AttendanceTrackerAction.Entrance, date);
@@ -42,7 +42,27 @@ namespace Targil1
         private void RegisterAttendanceToLog(int workerId, AttendanceTrackerAction action, DateTime date)
         {
             AttendanceTrackingRecord record = new AttendanceTrackingRecord(action, date);
-            // TODO: check if id already in dict
+            // Check if worker id already in dict. If not, create entry
+            if (!AttendanceTrackingLog.ContainsKey(workerId))
+            {
+                AttendanceTrackingLog.Add(workerId, new List<AttendanceTrackingRecord>());
+            }
+            AttendanceTrackingLog[workerId].Add(record);
+        }
+
+        public void PrintAttendanceLog()
+        {
+            foreach (KeyValuePair<int, List<AttendanceTrackingRecord>> entry in AttendanceTrackingLog)
+            {
+                int workerId = entry.Key;
+                List<AttendanceTrackingRecord> records = entry.Value;
+                Console.WriteLine($"Worker id {workerId}:");
+                foreach (AttendanceTrackingRecord record in records)
+                {
+                    Console.WriteLine(record);
+                }
+            }
+            Console.WriteLine($"Total records: {AttendanceTrackingLog.Count}");
         }
     }
 }

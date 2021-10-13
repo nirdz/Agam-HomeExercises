@@ -8,27 +8,27 @@ namespace Targil1
 {
     public class ProductFactory
     {
-        public Product CreateProduct(string prodName, string identifierCode, DateTime expirationDate)
+        public static Product CreateProduct(string prodName, string identifierCode, DateTime expirationDate)
         {
             Product prod = null;
-            switch (prodName)
+            switch (prodName.ToLower())
             {
-                case "Banana":
+                case "banana":
                     prod = new Banana(identifierCode, expirationDate);
                     break;
-                case "Milk":
+                case "milk":
                     prod = new Milk(identifierCode, expirationDate);
                     break;
-                case "Bread":
+                case "bread":
                     prod = new Bread(identifierCode, expirationDate);
                     break;
-                case "Egg":
+                case "egg":
                     prod = new Egg(identifierCode, expirationDate);
                     break;
-                case "Yogurt":
+                case "yogurt":
                     prod = new Yogurt(identifierCode, expirationDate);
                     break;
-                case "Oil":
+                case "oil":
                     prod = new Oil(identifierCode, expirationDate);
                     break;
                 default:

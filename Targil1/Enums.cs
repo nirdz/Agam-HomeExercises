@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Targil1
 {
-    public enum QueueRejectionReason
+    public enum RejectionReason
     {
         BodyHeatHigh,
         NoMask,

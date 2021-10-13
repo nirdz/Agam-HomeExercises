@@ -8,7 +8,7 @@ namespace Targil1
 {
     public class Worker : Person
     {
-        WorkerRole Role { get; }
+        public WorkerRole Role { get; }
 
         public Worker(int id, double bodyHeat, bool isWearingMask, bool isInQuarantine, WorkerRole role)
            : base(id, bodyHeat, isWearingMask, isInQuarantine)

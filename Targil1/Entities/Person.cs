@@ -21,5 +21,12 @@ namespace Targil1
             IsInIsolation = isInIsolation;
         }
 
+        public override string ToString()
+        {
+            string str = $"Id: {Id}, Body temperature: {BodyHeat}";
+            str += IsWearingMask ? ", wears mask" : ", not wearing mask";
+            str += IsInIsolation ? ", should be in isolation" : ", should not be in isolation";
+            return str;
+        }
     }
 }

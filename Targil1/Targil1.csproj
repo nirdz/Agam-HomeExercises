@@ -59,7 +59,8 @@
     <Compile Include="Entities\StoreQueue.cs" />
     <Compile Include="Entities\Worker.cs" />
     <Compile Include="Entities\WorkersManager.cs" />
-    <Compile Include="Exceptions\CustomerNotAllowedToEnterQueueException.cs" />
+    <Compile Include="Exceptions\CatalogNotExistsException.cs" />
+    <Compile Include="Exceptions\PersonNotAllowedToEnterStoreException.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Enums.cs" />

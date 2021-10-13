@@ -37,8 +37,8 @@ namespace Targil1
 
         public override string ToString()
         {
-            return "Name: " + Name + ", Price: " + Price + ", Expiration Date: " 
-                + ExpirationDate + ", Catalog Code: " + CatalogCode + ", Identifier Code: " + IdentifierCode;
+            return $"Name: {Name}, Price: {Price}, Expiration Date: {ExpirationDate}" 
+                + $", Catalog Code: {CatalogCode}, Identifier Code: {IdentifierCode}";
         }
     }
 }

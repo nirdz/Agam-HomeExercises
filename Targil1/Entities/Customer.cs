@@ -8,8 +8,8 @@ namespace Targil1
 {
     public class Customer : Person
     {
-        public Customer(int id, double bodyHeat, bool isWearingMask, bool isInQuarantine)
-            :base(id, bodyHeat, isWearingMask, isInQuarantine)
+        public Customer(int id, double bodyHeat, bool isWearingMask, bool isInIsolation)
+            :base(id, bodyHeat, isWearingMask, isInIsolation)
         {
         
         }
@@ -18,7 +18,7 @@ namespace Targil1
         /*
          *  Returns whether a customer can enter the store's queue.
          *  A customer can enter if his body heat <= 38, 
-         *  wears mask and is not in quarantine.
+         *  wears mask and is not in inIsolation.
          */
         /*public bool CanEnterStoreQueue()
         {
