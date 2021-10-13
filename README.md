@@ -1,2 +1,2 @@
 ## Agam-HomeExercises
-### Targil 1
+### Targil 1 - Store Managment
